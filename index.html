@@ -167,7 +167,6 @@
     .novel-detail-parts { min-height: 100px; }
     .novel-detail-parts p { font-size: 1.1rem; line-height: 1.9; margin-bottom: 20px; color: var(--text); white-space: pre-wrap; }
 
-    /* Styling for in-content ads */
     .in-content-ad-slot {
         margin: 25px auto;
         padding: 15px;
@@ -175,12 +174,13 @@
         background-color: var(--ads-bg);
         border-radius: 8px;
         text-align: center;
-        min-height: 70px; /* Adjusted min-height */
+        min-height: 70px;
         display: flex;
         align-items: center;
         justify-content: center;
+        overflow: hidden;
     }
-     .in-content-ad-slot p { /* Fallback text styling */
+     .in-content-ad-slot p {
         color: var(--text-light);
         font-size: 0.85rem;
     }
@@ -192,10 +192,10 @@
     .btn-part-nav:disabled { background-color: var(--text-light); cursor: not-allowed; }
     #part-indicator { font-size: 0.9rem; color: var(--text-light); font-weight: 500; }
 
-    .ads-placeholder { /* This is the main bottom ad placeholder */
+    #main-bottom-ad-placeholder {
         text-align:center; padding: 25px; border: 1px dashed var(--border); margin-top:35px; background-color: var(--ads-bg); border-radius: 8px; transition: background-color 0.3s ease, border-color 0.3s ease; min-height: 50px;
     }
-    .ads-placeholder p { color: var(--text-light); font-size: 0.9rem;}
+    #main-bottom-ad-placeholder p { color: var(--text-light); font-size: 0.9rem;}
 
 
     .form-grid { display: grid; grid-template-columns: 1fr; gap: 0 25px; }
@@ -329,9 +329,8 @@
                     <span id="part-indicator"></span>
                     <button id="next-part-button" class="btn-part-nav hidden">الجزء التالي <i class="fas fa-arrow-left"></i></button>
                 </div>
-                <!-- This is the main ad placeholder at the bottom of the page -->
                 <div id="main-bottom-ad-placeholder" class="ads-placeholder">
-                     <p>Advertisement</p> <!-- Fallback text -->
+                     <p>Advertisement</p>
                 </div>
             </div>
         </div>
@@ -400,7 +399,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const partIndicator = document.getElementById('part-indicator');
     const mainBottomAdPlaceholder = document.getElementById('main-bottom-ad-placeholder');
 
-
     const themeToggleButton = document.getElementById('theme-toggle-button');
     const themeIcon = themeToggleButton.querySelector('i');
 
@@ -408,14 +406,61 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentNovelPartIndex = 0;
     let allStoriesCache = [];
     let firebaseInitialized = false;
-    let adInstanceCounter = 0; // For unique ad slot IDs
+    let adInstanceCounter = 0;
 
-    // Removed the global adInterval as ad loading is now more contextual
-    // let adInterval = null;
+    // ------------ START: New Ad Logic: Click anywhere every 14 seconds ------------
+    const AD_URL_CLICK_ANYWHERE = "https://www.profitableratecpm.com/d5castnfa9?key=59c06a9ab9c76401dc8a32fdd5d44695";
+    const AD_CLICK_INTERVAL_MS = 14000; // 14 seconds in milliseconds
+    let adClickArmed = false;
+    let adClickIntervalTimerId = null;
+    let globalAdClickListenerAdded = false;
+
+    function setupPeriodicAdClick() {
+        console.log("إعداد النقر الدوري للإعلان. مسلح: " + adClickArmed);
+
+        if (adClickIntervalTimerId) {
+            clearInterval(adClickIntervalTimerId); // مسح المؤقت الحالي إذا وجد
+        }
+
+        adClickIntervalTimerId = setInterval(() => {
+            adClickArmed = true;
+            console.log("تم تسليح نقرة الإعلان بواسطة المؤقت. النقرة التالية ستفعل الإعلان.");
+        }, AD_CLICK_INTERVAL_MS);
+
+        if (!globalAdClickListenerAdded) {
+            document.documentElement.addEventListener('click', function(event) {
+                // استثناء عناصر واجهة المستخدم الهامة من تفعيل الإعلان
+                // إذا كنت تريد أن *أي* نقرة تفعل الإعلان، يمكنك إزالة هذا الشرط
+                const criticalSelectors = '.page-header, .btn-part-nav, .theme-toggle-btn, nav a, .category, #upload-form button, .btn-delete-story, .btn-back, #search-bar, .form-group input, .form-group select, .form-group textarea';
+                if (event.target.closest(criticalSelectors)) {
+                    // console.log("تم النقر على عنصر واجهة مستخدم هام، تم كبح الإعلان لهذه المرة.");
+                    return;
+                }
+
+                if (adClickArmed) {
+                    console.log("تم اكتشاف نقرة والإعلان مسلح. فتح رابط الإعلان:", AD_URL_CLICK_ANYWHERE);
+                    
+                    let newWindow = window.open(AD_URL_CLICK_ANYWHERE, '_blank');
+                    if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
+                        // تم حظر النافذة المنبثقة
+                        console.warn("تم حظر النافذة المنبثقة بواسطة المتصفح.");
+                        // يمكنك هنا عرض رسالة للمستخدم أو محاولة فتح الرابط بطريقة أخرى (أقل فعالية)
+                        // window.location.href = AD_URL_CLICK_ANYWHERE; // (سيبدل الصفحة الحالية) - غير مستحسن
+                    }
+                    
+                    adClickArmed = false; // إلغاء تسليح الإعلان بعد نقرة واحدة
+                    console.log("تم إلغاء تسليح نقرة الإعلان. انتظار المؤقت التالي.");
+                }
+            }, true); // استخدام مرحلة الالتقاط (capture phase)
+            globalAdClickListenerAdded = true;
+            console.log("تمت إضافة مستمع النقر العام للإعلانات.");
+        }
+    }
+    // ------------ END: New Ad Logic ------------
+
 
     function mainAppInit() {
         if (!window.fbDb) {
-            console.warn("Firebase غير جاهز بعد. إعادة المحاولة...");
             window.onFirebaseReady = initializeFirebaseAndData;
             return;
         }
@@ -439,7 +484,6 @@ document.addEventListener('DOMContentLoaded', function() {
         backToListButton.addEventListener('click', () => {
             pageNovelDetail.classList.add('hidden');
             currentOpenNovel = null;
-            // if (adInterval) clearInterval(adInterval); // Clear interval when leaving detail page
             showListPage();
         });
 
@@ -447,6 +491,8 @@ document.addEventListener('DOMContentLoaded', function() {
         prevPartButton.addEventListener('click', handlePrevPart);
         themeToggleButton.addEventListener('click', toggleTheme);
         setupInitialTheme();
+
+        setupPeriodicAdClick(); // <-- استدعاء دالة إعداد الإعلان الجديد هنا
     }
 
     window.onFirebaseReady = () => { if (!firebaseInitialized) { mainAppInit(); } };
@@ -456,11 +502,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function initializeFirebaseAndData() {
         if (firebaseInitialized || !window.fbDb || !window.fbOnValue || !window.fbRef || !window.fbQuery || !window.fbOrderByChild) {
-            console.log("Firebase غير جاهز بالكامل أو تم تهيئته بالفعل.");
             return;
         }
         firebaseInitialized = true;
-        console.log("تم إنشاء اتصال Firebase. جارٍ تهيئة مستمع البيانات.");
         const db = window.fbDb;
         const storiesQuery = window.fbQuery(window.fbRef(db, 'stories'), window.fbOrderByChild('timestamp'));
         window.fbOnValue(storiesQuery, (snapshot) => {
@@ -471,67 +515,56 @@ document.addEventListener('DOMContentLoaded', function() {
                     allStoriesCache.push({ id: key, ...storiesData[key] });
                 }
                 allStoriesCache.reverse();
-                console.log("تم تحميل القصص من Firebase:", allStoriesCache.length);
-            } else {
-                console.log("لم يتم العثور على أي قصص في Firebase.");
             }
-
             if (!pageList.classList.contains('hidden')) {
                 filterAndRenderStories();
             }
         }, (error) => {
-            console.error("فشلت قراءة Firebase: ", error);
-            storiesContainer.innerHTML = `<div class="no-stories"><i class="fas fa-exclamation-triangle"></i><h3> خطأ في التحميل</h3><p>لم نتمكن من الاتصال بقاعدة البيانات (${error.message}). الرجاء المحاولة مرة أخرى لاحقاً.</p></div>`;
+            console.error("Firebase read failed: ", error);
+            storiesContainer.innerHTML = `<div class="no-stories"><i class="fas fa-exclamation-triangle"></i><h3> خطأ في التحميل</h3><p>لم نتمكن من الاتصال بقاعدة البيانات (${error.message}).</p></div>`;
         });
     }
 
-    function loadProfitableratecpmAd(targetContainer) {
+    function loadProfitableratecpmAd(targetContainer, instanceNumber) {
         if (!targetContainer) {
-            console.warn("Target container for Profitableratecpm ad not provided.");
+            console.warn(`[AdInstance ${instanceNumber}] Target container for Profitableratecpm ad not provided.`);
             return;
         }
-        targetContainer.innerHTML = ''; // Clear previous content
+        targetContainer.innerHTML = '';
 
-        // This is the ad script the user specifically wants for in-content
         const adScriptSrc = "//pl26515491.profitableratecpm.com/3e36ee9beffd0a2aac4d4278fdf8e340/invoke.js";
-        
-        // The invoke.js script usually looks for a div with id="container-3e36ee9beffd0a2aac4d4278fdf8e340"
-        // We will create this div inside our targetContainer
-        const adInvokeContainerId = "container-3e36ee9beffd0a2aac4d4278fdf8e340"; // The ID the script expects
-        let adContainer = targetContainer.querySelector(`#${adInvokeContainerId}`);
-        if (!adContainer) { // Create if not exists (shouldn't exist if we clear targetContainer)
-             adContainer = document.createElement('div');
-             adContainer.id = adInvokeContainerId; // Use the specific ID
-             targetContainer.appendChild(adContainer);
-        }
+        const adInvokeContainerId = "container-3e36ee9beffd0a2aac4d4278fdf8e340";
 
+        const adContentDiv = document.createElement('div');
+        adContentDiv.id = adInvokeContainerId;
+        targetContainer.appendChild(adContentDiv);
 
         const script = document.createElement('script');
         script.async = true;
         script.setAttribute('data-cfasync', 'false');
-        script.src = adScriptSrc; // Add cache buster if needed: + `?v=${new Date().getTime()}`
+        script.src = `${adScriptSrc}?v=${new Date().getTime()}_${instanceNumber}`;
         
         script.onload = () => {
-            console.log(`Profitableratecpm ad script loaded for container associated with:`, targetContainer);
-            // Check if the ad actually rendered something (very basic check)
-            if (adContainer.children.length === 0 && adContainer.innerHTML.trim() === '') {
-                 // Ad script loaded but didn't populate the div. This can happen.
-                 // It might populate globally or have other mechanisms.
-                 // Or it might have already run for a previous instance of this ID.
-                 console.warn("Profitableratecpm ad script loaded, but target div seems empty:", adContainer);
-                 // targetContainer.innerHTML = "<p>Advertisement placeholder</p>"; // Fallback
-            }
+            setTimeout(() => {
+                let adRendered = false;
+                if (adContentDiv.parentElement === targetContainer) {
+                    if (adContentDiv.innerHTML.trim() !== '' || adContentDiv.children.length > 0) {
+                        adRendered = true;
+                    }
+                } else if (targetContainer.innerHTML.trim() !== '') { 
+                    adRendered = true;
+                }
+                if (!adRendered) {
+                    // console.warn(`[AdInstance ${instanceNumber}] Ad script loaded, but no ad content detected.`);
+                }
+            }, 600);
         };
         script.onerror = () => {
-            console.error("Failed to load Profitableratecpm ad script for:", targetContainer);
-            targetContainer.innerHTML = "<p>Error loading advertisement.</p>"; // Fallback
+            console.error(`[AdInstance ${instanceNumber}] Failed to load Profitableratecpm ad script from: ${script.src}`);
+            targetContainer.innerHTML = "<p>Error loading advertisement.</p>";
         };
         
-        // Append script to the target container to ensure it executes in context
-        // or to head for global execution. For invoke.js that finds an ID, head is often fine.
-        targetContainer.appendChild(script); 
-        // document.head.appendChild(script); // Alternative if script needs to be in head
-        console.log("Attempting to load Profitableratecpm ad into:", targetContainer);
+        targetContainer.appendChild(script);
     }
 
 
@@ -550,9 +583,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     const db = window.fbDb;
                     const storyRef = window.fbRef(db, 'stories/' + storyId);
                     await window.fbRemove(storyRef);
-                    console.log(`تم حذف القصة ${storyId} بنجاح.`);
                 } catch (error) {
-                    console.error("خطأ في حذف القصة:", error);
+                    console.error("Error deleting story:", error);
                     alert(`حدث خطأ أثناء حذف الرواية: ${error.message}`);
                 }
             }
@@ -600,28 +632,26 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function displayCurrentNovelPart() {
-        detailNovelPartsContainer.innerHTML = ''; // Clear previous content
-        adInstanceCounter = 0; // Reset for current part
+        detailNovelPartsContainer.innerHTML = '';
+        adInstanceCounter = 0;
 
         if (!currentOpenNovel || !currentOpenNovel.parts || currentOpenNovel.parts.length === 0) {
             detailNovelPartsContainer.innerHTML = "<p>لا توجد أجزاء لهذه الرواية.</p>";
             prevPartButton.classList.add('hidden');
             nextPartButton.classList.add('hidden');
             partIndicator.textContent = '';
-            if (mainBottomAdPlaceholder) mainBottomAdPlaceholder.style.display = 'block'; // Show bottom ad if no content
+            if (mainBottomAdPlaceholder) mainBottomAdPlaceholder.style.display = 'block';
             return;
         }
 
         const parts = Array.isArray(currentOpenNovel.parts) ? currentOpenNovel.parts : [currentOpenNovel.parts];
         let currentPartText = (parts.length > 0 && parts[currentNovelPartIndex] && typeof parts[currentNovelPartIndex] === 'string')
-                                ? parts[currentNovelPartIndex].trim()
-                                : "";
-
+                                ? parts[currentNovelPartIndex].trim() : "";
 
         if (!currentPartText) {
             detailNovelPartsContainer.innerHTML = "<p>الجزء المحدد غير متوفر أو فارغ.</p>";
         } else {
-            const idealSplitLength = 500; // Approximate characters per chunk
+            const idealSplitLength = 500;
             let remainingText = currentPartText;
             let hasInContentAds = false;
 
@@ -634,14 +664,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else {
                     actualSplitLength = idealSplitLength;
                     let splitAt = -1;
-                    // Try to find a space before the ideal split point (look back 50% of ideal length)
                     for (let i = idealSplitLength; i > idealSplitLength / 2 && i > 0; i--) {
                         if (remainingText[i] === ' ' || remainingText[i] === '\n') {
                             splitAt = i;
                             break;
                         }
                     }
-                    // If no space found backward, try forward (up to 50% more than ideal length)
                     if (splitAt === -1) {
                         for (let i = idealSplitLength + 1; i < remainingText.length && i < idealSplitLength * 1.5; i++) {
                             if (remainingText[i] === ' ' || remainingText[i] === '\n') {
@@ -650,39 +678,33 @@ document.addEventListener('DOMContentLoaded', function() {
                             }
                         }
                     }
-                    actualSplitLength = (splitAt !== -1) ? splitAt + 1 : idealSplitLength; // +1 to split AFTER the space/newline
+                    actualSplitLength = (splitAt !== -1) ? splitAt + 1 : idealSplitLength;
                     if (actualSplitLength > remainingText.length) actualSplitLength = remainingText.length;
                 }
 
                 chunk = remainingText.substring(0, actualSplitLength);
-                remainingText = remainingText.substring(actualSplitLength).trimStart(); // Trim leading space for next chunk
+                remainingText = remainingText.substring(actualSplitLength).trimStart();
 
                 const p = document.createElement('p');
                 p.textContent = chunk;
                 p.classList.add('fade-in');
                 detailNovelPartsContainer.appendChild(p);
 
-                if (remainingText.length > 0) {
+                if (remainingText.length > 0 && chunk.length > 100) {
                     hasInContentAds = true;
                     adInstanceCounter++;
                     const adSlotDiv = document.createElement('div');
                     adSlotDiv.classList.add('in-content-ad-slot');
-                    // The ID of the ad slot itself should be unique if we have multiple on page
-                    adSlotDiv.id = `in-content-ad-${currentNovelPartIndex}-${adInstanceCounter}`;
+                    adSlotDiv.id = `in-content-ad-slot-${currentNovelPartIndex}-${adInstanceCounter}`;
                     detailNovelPartsContainer.appendChild(adSlotDiv);
                     
-                    // Load the specific ad into this slot
-                    // Note: If invoke.js *always* targets the fixed ID 'container-3e36ee9beffd0a2aac4d4278fdf8e340',
-                    // then only the first such ad slot on the page might render.
-                    // This is a limitation of such ad scripts.
-                    loadProfitableratecpmAd(adSlotDiv);
+                    loadProfitableratecpmAd(adSlotDiv, adInstanceCounter);
                 }
             }
-             // Control visibility of the main bottom ad placeholder
             if (mainBottomAdPlaceholder) {
                 mainBottomAdPlaceholder.style.display = hasInContentAds ? 'none' : 'block';
-                if (!hasInContentAds) { // If no in-content ads, load the bottom one
-                    loadProfitableratecpmAd(mainBottomAdPlaceholder);
+                if (!hasInContentAds) {
+                    loadProfitableratecpmAd(mainBottomAdPlaceholder, 0);
                 }
             }
         }
@@ -737,14 +759,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const displayDate = story.date || (story.timestamp ? new Date(parseInt(story.timestamp)).toLocaleDateString('ar-EG-u-nu-latn', { year: 'numeric', month: 'long', day: 'numeric' }) : 'غير معروف');
         detailNovelDate.innerHTML = `<i class="far fa-calendar"></i> ${displayDate}`;
 
-        displayCurrentNovelPart(); // This will now handle in-content ads and bottom ad visibility
+        displayCurrentNovelPart();
 
         pageNovelDetail.classList.remove('hidden');
         pageNovelDetail.classList.add('fade-in');
         window.scrollTo(0, 0);
-
-        // The old adInterval logic is removed; ad loading is handled by displayCurrentNovelPart
-        // and potentially when showNovelDetailPage is called if no in-content ads are present.
     }
 
 
@@ -775,7 +794,6 @@ document.addEventListener('DOMContentLoaded', function() {
         navList.classList.add('active');
         if (navUpload) navUpload.classList.remove('active');
         filterAndRenderStories();
-        // if (adInterval) clearInterval(adInterval); // Clear any active ad timers
     }
 
     function showUploadPage() {
@@ -795,7 +813,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (previewIcon) previewIcon.style.display = 'block';
         if (previewText) previewText.style.display = 'block';
         window.scrollTo(0,0);
-        // if (adInterval) clearInterval(adInterval); // Clear any active ad timers
     }
 
     function handleImagePreview() {
@@ -870,7 +887,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 handleImagePreview.call(storyImageInput);
             }, 1500);
         } catch (error) {
-            console.error("خطأ في تحميل القصة:", error);
+            console.error("Error uploading story:", error);
             alert("حدث خطأ أثناء نشر الرواية: " + error.message);
             uploadButton.innerHTML = '<i class="fas fa-paper-plane"></i> نشر الرواية';
             uploadButton.style.background = '';
@@ -923,13 +940,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
-
-<!-- The user-specified ad script and its container are NO LONGER needed here globally,
-     as they will be injected dynamically by the loadProfitableratecpmAd function.
-     Leaving them here might cause the ad to load once globally outside the story.
-<script async="async" data-cfasync="false" src="//pl26515491.profitableratecpm.com/3e36ee9beffd0a2aac4d4278fdf8e340/invoke.js"></script>
-<div id="container-3e36ee9beffd0a2aac4d4278fdf8e340"></div>
--->
 
 </body>
 </html>
