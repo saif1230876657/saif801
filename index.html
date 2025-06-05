@@ -3,39 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>روايات سيف | عالم من الخيال</title>
+  <title>روايات سيف | عالم من الخيال والإبداع</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
-      /* سمة فاتحة (افتراضية) */
-      --primary: #5c6bc0; /* اللون التفاعلي الرئيسي */
-      --primary-dark: #3f51b5; /* ظل أغمق من اللون الأساسي */
-      --secondary: #ff7043; /* لون مميز */
-      --light-bg: #f5f7fa; /* خلفية الصفحة الإجمالية */
-      --light-bg-alt: #e4e7f1; /* خلفية مختلفة قليلاً من أجل العمق */
-      --card-bg: #ffffff; /* خلفيات البطاقة */
-      --text: #2d3748; /* لون النص الرئيسي */
-      --text-on-primary: #ffffff; /* لون النص على الخلفيات الأساسية */
-      --text-light: #718096; /* نص أفتح للمعلومات الثانوية */
-      --text-darker: #1a237e; /* نص أغمق، غالبًا للعناوين على الخلفية الفاتحة */
-      --border: #e2e8f0; /* لون الحدود */
-      --shadow: rgba(0, 0, 0, 0.08); /* لون الظل */
+      /* Light Theme (Default) */
+      --primary: #5c6bc0; /* Main interactive color */
+      --primary-dark: #3f51b5; /* Darker shade of primary */
+      --secondary: #ff7043; /* Accent color */
+      --light-bg: #f5f7fa; /* Overall page background */
+      --light-bg-alt: #e4e7f1; /* Slightly different background for depth */
+      --card-bg: #ffffff; /* Card backgrounds */
+      --text: #2d3748; /* Main text color */
+      --text-on-primary: #ffffff; /* Text color on primary backgrounds */
+      --text-light: #718096; /* Lighter text for secondary info */
+      --text-darker: #1a237e; /* Darker text, often for titles on light bg */
+      --border: #e2e8f0; /* Border color */
+      --shadow: rgba(0, 0, 0, 0.08); /* Shadow color */
       --header-grad-start: #5c6bc0;
       --header-grad-end: #8e24aa;
       --page-header-grad-start: var(--primary);
       --page-header-grad-end: var(--primary-dark);
       --body-bg-gradient: linear-gradient(135deg, var(--light-bg) 0%, var(--light-bg-alt) 100%);
-      --input-bg: #f9fafb; /* خلفية حقل الإدخال */
-      --placeholder-bg: #e0e7ff; /* لعناصر نائبة للصور */
-      --category-bg: #f0f4ff; /* خلفية علامة الفئة */
-      --category-border: #dbe4ff; /* حدود علامة الفئة */
-      --category-text: var(--primary); /* لون نص علامة الفئة */
-      --ads-bg: #f0f2f5; /* خلفية العنصر النائب للإعلانات */
-      --success: #4CAF50; /* لون النجاح للإشعارات */
-      --error: #F44336; /* لون الخطأ للإشعارات */
+      --input-bg: #f9fafb; /* Input field background */
+      --placeholder-bg: #e0e7ff; /* For image placeholders */
+      --category-bg: #f0f4ff; /* Category tag background */
+      --category-border: #dbe4ff; /* Category tag border */
+      --category-text: var(--primary); /* Category tag text color */
+      --ads-bg: #f0f2f5; /* Ads placeholder background */
+      --success: #4CAF50; /* Success color for notifications */
+      --error: #F44336; /* Error color for notifications */
     }
 
     body.dark-mode {
@@ -205,7 +205,7 @@
     .form-group label i { margin-left: 6px; color: var(--primary); }
 
     input[type="text"], input[type="url"], textarea, select { width: 100%; padding: 12px 15px; font-size: 1rem; border: 1px solid var(--border); border-radius: 8px; transition: all 0.3s ease; background: var(--input-bg); color: var(--text); font-family: "Cairo", sans-serif; }
-    input[type="text"]:focus, input[type="url"]:focus, textarea:focus, select:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 20%, transparent); background: var(--card-bg); }
+    input[type="text"]:focus, input[type="url"]:focus, textarea[type="focus"], select:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 20%, transparent); background: var(--card-bg); }
     textarea { min-height: 120px; line-height: 1.7; }
 
     .upload-preview { margin-top: 10px; border: 2px dashed var(--border); border-radius: 8px; padding: 15px; text-align: center; background-color: var(--input-bg); min-height: 100px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
@@ -281,8 +281,7 @@
           <div class="category" data-category="بوليسية">بوليسية</div>
         </div>
         <div id="stories-container" class="stories-grid">
-            <!-- Story cards will be injected here by JavaScript -->
-        </div>
+            </div>
       </div>
     </div>
 
@@ -322,8 +321,7 @@
                     <span id="detail-novel-date"><i class="far fa-calendar"></i></span>
                 </div>
                 <div id="detail-novel-parts" class="novel-detail-parts">
-                    <!-- Novel parts and in-content ads will be injected here -->
-                </div>
+                    </div>
                 <div class="novel-part-navigation">
                     <button id="prev-part-button" class="btn-part-nav hidden"><i class="fas fa-arrow-right"></i> الجزء السابق</button>
                     <span id="part-indicator"></span>
@@ -342,12 +340,12 @@
   import { getDatabase, ref, set, get, push, onValue, query, orderByChild, remove } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-database.js";
 
   const firebaseConfig = {
-    apiKey: "AIzaSyAjE-2q6PONBkCin9ZN22gDp9Q8pAH9ZW8", // استبدل بمفتاح API الفعلي الخاص بك
+    apiKey: "AIzaSyAjE-2q6PONBkCin9ZN22gDp9Q8pAH9ZW8",
     authDomain: "story-97cf7.firebaseapp.com",
     databaseURL: "https://story-97cf7-default-rtdb.firebaseio.com",
     projectId: "story-97cf7",
     storageBucket: "story-97cf7.appspot.com",
-    messagesSenderId: "742801388214",
+    messagingSenderId: "742801388214", // <-- تم تصحيح الخطأ الإملائي هنا
     appId: "1:742801388214:web:32a305a8057b0582c5ec17",
     measurementId: "G-9DPPWX7CF0"
   };
@@ -408,64 +406,71 @@ document.addEventListener('DOMContentLoaded', function() {
     let firebaseInitialized = false;
     let adInstanceCounter = 0;
 
-    // ------------ START: New Ad Logic: Click anywhere every 14 seconds ------------
+    // ------------ START: Logic for "Click Anywhere" Ad (Pop-up/Pop-under) ------------
     const AD_URL_CLICK_ANYWHERE = "https://www.profitableratecpm.com/d5castnfa9?key=59c06a9ab9c76401dc8a32fdd5d44695";
-    const AD_CLICK_INTERVAL_MS = 14000; // 14 seconds in milliseconds
+    const AD_CLICK_INTERVAL_MS = 5000; // تم التعديل إلى 5 ثواني
     let adClickArmed = false;
     let adClickIntervalTimerId = null;
     let globalAdClickListenerAdded = false;
 
     function setupPeriodicAdClick() {
-        console.log("إعداد النقر الدوري للإعلان. مسلح: " + adClickArmed);
+        console.log("إعداد آلية إعلان النقر الدوري. مسلح حالياً: " + adClickArmed);
 
         if (adClickIntervalTimerId) {
-            clearInterval(adClickIntervalTimerId); // مسح المؤقت الحالي إذا وجد
+            clearInterval(adClickIntervalTimerId); 
         }
 
+        // كل 5 ثواني، يتم "تسليح" الإعلان. النقرة التالية المؤهلة ستفعله.
         adClickIntervalTimerId = setInterval(() => {
             adClickArmed = true;
-            console.log("تم تسليح نقرة الإعلان بواسطة المؤقت. النقرة التالية ستفعل الإعلان.");
+            console.log("تم تسليح نقرة الإعلان بواسطة المؤقت. النقرة التالية المؤهلة ستفعل الإعلان.");
         }, AD_CLICK_INTERVAL_MS);
 
         if (!globalAdClickListenerAdded) {
             document.documentElement.addEventListener('click', function(event) {
-                // استثناء عناصر واجهة المستخدم الهامة من تفعيل الإعلان
-                // إذا كنت تريد أن *أي* نقرة تفعل الإعلان، يمكنك إزالة هذا الشرط
-                const criticalSelectors = '.page-header, .btn-part-nav, .theme-toggle-btn, nav a, .category, #upload-form button, .btn-delete-story, .btn-back, #search-bar, .form-group input, .form-group select, .form-group textarea';
+                // قائمة العناصر التي إذا تم النقر عليها، *لن* يتم تفعيل الإعلان.
+                // هذا لمنع الإعلانات المزعجة عند استخدام واجهة المستخدم الأساسية.
+                // يمكنك تعديل هذه القائمة إذا أردت سلوكًا مختلفًا.
+                const criticalSelectors = '.page-header, .btn-part-nav, .theme-toggle-btn, nav a, .category, #upload-form button, .btn-delete-story, .btn-back, #search-bar, .form-group input, .form-group select, .form-group textarea, .story-card-visual';
+                
                 if (event.target.closest(criticalSelectors)) {
-                    // console.log("تم النقر على عنصر واجهة مستخدم هام، تم كبح الإعلان لهذه المرة.");
+                    // console.log("تم النقر على عنصر واجهة مستخدم هام، تم تجاهل تفعيل الإعلان لهذه المرة.");
                     return;
                 }
 
                 if (adClickArmed) {
-                    console.log("تم اكتشاف نقرة والإعلان مسلح. فتح رابط الإعلان:", AD_URL_CLICK_ANYWHERE);
+                    console.log("تم اكتشاف نقرة والإعلان مسلح. محاولة فتح رابط الإعلان:", AD_URL_CLICK_ANYWHERE);
                     
+                    // محاولة فتح الإعلان في نافذة جديدة.
+                    // **ملاحظة هامة:** معظم المتصفحات ستحظر هذا الإجراء إذا لم يكن نتيجة مباشرة لنقرة المستخدم.
                     let newWindow = window.open(AD_URL_CLICK_ANYWHERE, '_blank');
+                    
                     if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
-                        // تم حظر النافذة المنبثقة
-                        console.warn("تم حظر النافذة المنبثقة بواسطة المتصفح.");
-                        // يمكنك هنا عرض رسالة للمستخدم أو محاولة فتح الرابط بطريقة أخرى (أقل فعالية)
-                        // window.location.href = AD_URL_CLICK_ANYWHERE; // (سيبدل الصفحة الحالية) - غير مستحسن
+                        console.warn("فشل فتح النافذة الجديدة. غالباً بسبب حاصر النوافذ المنبثقة في المتصفح.");
+                        // يمكنك هنا إعلام المستخدم بأن النافذة تم حظرها، إذا أردت.
+                    } else {
+                        console.log("تم فتح نافذة الإعلان بنجاح (أو لم يتم حظرها).");
                     }
                     
-                    adClickArmed = false; // إلغاء تسليح الإعلان بعد نقرة واحدة
+                    adClickArmed = false; // إلغاء تسليح الإعلان بعد محاولة الفتح.
                     console.log("تم إلغاء تسليح نقرة الإعلان. انتظار المؤقت التالي.");
                 }
-            }, true); // استخدام مرحلة الالتقاط (capture phase)
+            }, true); 
             globalAdClickListenerAdded = true;
-            console.log("تمت إضافة مستمع النقر العام للإعلانات.");
+            console.log("تمت إضافة مستمع النقر العام لآلية إعلانات النقر الدوري.");
         }
     }
-    // ------------ END: New Ad Logic ------------
+    // ------------ END: Logic for "Click Anywhere" Ad ------------
 
 
     function mainAppInit() {
         if (!window.fbDb) {
-            window.onFirebaseReady = initializeFirebaseAndData;
+            window.onFirebaseReady = initializeFirebaseAndData; // تأكد من أن initializeFirebaseAndData هي التي تستدعي باقي التهيئة
             return;
         }
-        initializeFirebaseAndData();
+        initializeFirebaseAndData(); // إذا كان Firebase جاهزًا بالفعل
 
+        // بقية تهيئة واجهة المستخدم
         navList.onclick = (e) => { e.preventDefault(); showListPage(); };
         navUpload.onclick = (e) => { e.preventDefault(); showUploadPage(); };
         if(cancelUploadButton) {
@@ -492,19 +497,36 @@ document.addEventListener('DOMContentLoaded', function() {
         themeToggleButton.addEventListener('click', toggleTheme);
         setupInitialTheme();
 
-        setupPeriodicAdClick(); // <-- استدعاء دالة إعداد الإعلان الجديد هنا
+        // استدعاء دالة إعداد إعلانات النقر الدوري مرة واحدة عند بدء التطبيق
+        setupPeriodicAdClick(); 
+        showListPage(); // عرض الصفحة الافتراضية
     }
 
-    window.onFirebaseReady = () => { if (!firebaseInitialized) { mainAppInit(); } };
+    window.onFirebaseReady = () => { 
+        console.log("Firebase ready callback triggered.");
+        if (!firebaseInitialized) { 
+            // استدعاء mainAppInit هنا بدلاً من initializeFirebaseAndData مباشرة
+            // mainAppInit ستقوم باستدعاء initializeFirebaseAndData
+            mainAppInit(); 
+        } 
+    };
+
+    // محاولة التهيئة إذا كان Firebase جاهزًا بشكل متزامن
     if (window.fbDb && !firebaseInitialized) {
+        console.log("Firebase was ready synchronously.");
         mainAppInit();
     }
 
+
     function initializeFirebaseAndData() {
         if (firebaseInitialized || !window.fbDb || !window.fbOnValue || !window.fbRef || !window.fbQuery || !window.fbOrderByChild) {
+            if (firebaseInitialized) console.log("Firebase data already initialized.");
+            else console.log("Firebase SDK functions not fully available yet for data initialization.");
             return;
         }
-        firebaseInitialized = true;
+        firebaseInitialized = true; // ضع هذا هنا للتأكد أنه يتم مرة واحدة فقط
+        console.log("Initializing Firebase data listener...");
+
         const db = window.fbDb;
         const storiesQuery = window.fbQuery(window.fbRef(db, 'stories'), window.fbOrderByChild('timestamp'));
         window.fbOnValue(storiesQuery, (snapshot) => {
@@ -515,8 +537,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     allStoriesCache.push({ id: key, ...storiesData[key] });
                 }
                 allStoriesCache.reverse();
+                console.log("Stories loaded/updated from Firebase:", allStoriesCache.length);
+            } else {
+                console.log("No stories found in Firebase.");
             }
-            if (!pageList.classList.contains('hidden')) {
+            if (!pageList.classList.contains('hidden')) { // تحديث القائمة فقط إذا كانت معروضة
                 filterAndRenderStories();
             }
         }, (error) => {
@@ -527,44 +552,57 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function loadProfitableratecpmAd(targetContainer, instanceNumber) {
         if (!targetContainer) {
-            console.warn(`[AdInstance ${instanceNumber}] Target container for Profitableratecpm ad not provided.`);
+            // console.warn(`[AdInstance ${instanceNumber}] Target container for Profitableratecpm ad not provided.`);
             return;
         }
-        targetContainer.innerHTML = '';
+        targetContainer.innerHTML = ''; // مسح المحتوى القديم
 
         const adScriptSrc = "//pl26515491.profitableratecpm.com/3e36ee9beffd0a2aac4d4278fdf8e340/invoke.js";
-        const adInvokeContainerId = "container-3e36ee9beffd0a2aac4d4278fdf8e340";
+        const adInvokeContainerId = "container-3e36ee9beffd0a2aac4d4278fdf8e340"; // هذا ID يجب أن يكون فريدًا للصفحة إذا كان السكريبت يتوقعه كذلك
 
+        // بعض شبكات الإعلانات تحتاج إلى ID فريد لكل مرة يتم فيها تحميل السكريبت أو لكل حاوية.
+        // إذا كان السكريبت يعيد استخدام نفس ID الحاوية (adInvokeContainerId)، قد تحتاج إلى التأكد من أن هذا ID غير مستخدم في مكان آخر بشكل متزامن.
+        // في حالتنا، يتم استدعاء هذه الدالة لحاويات مختلفة (in-content-ad-slot-X و main-bottom-ad-placeholder)
+        // أو يتم مسح الحاوية وإعادة إنشائها.
+        
         const adContentDiv = document.createElement('div');
-        adContentDiv.id = adInvokeContainerId;
+        // قد تحتاج شبكة الإعلانات إلى هذا الـ ID للحاوية التي ستضع فيها الإعلان
+        adContentDiv.id = `${adInvokeContainerId}_${instanceNumber}`; // جعل الـ ID فريدًا لكل مثيل
         targetContainer.appendChild(adContentDiv);
 
         const script = document.createElement('script');
         script.async = true;
         script.setAttribute('data-cfasync', 'false');
-        script.src = `${adScriptSrc}?v=${new Date().getTime()}_${instanceNumber}`;
+        // إضافة متغير عشوائي لمنع التخزين المؤقت القوي للسكريبت إذا كان ذلك يسبب مشاكل
+        script.src = `${adScriptSrc}?v=${new Date().getTime()}_${instanceNumber}`; 
         
         script.onload = () => {
+            // console.log(`[AdInstance ${instanceNumber}] Profitableratecpm ad script loaded from: ${script.src}`);
+            // يمكنك إضافة تأخير صغير للتحقق مما إذا تم عرض الإعلان
             setTimeout(() => {
                 let adRendered = false;
-                if (adContentDiv.parentElement === targetContainer) {
-                    if (adContentDiv.innerHTML.trim() !== '' || adContentDiv.children.length > 0) {
-                        adRendered = true;
-                    }
-                } else if (targetContainer.innerHTML.trim() !== '') { 
+                // تحقق مما إذا كانت الحاوية الأصلية (targetContainer) أو الحاوية الداخلية (adContentDiv) تحتوي على شيء
+                if (targetContainer && (targetContainer.innerHTML.trim() !== '' && targetContainer.children.length > 1 || (targetContainer.children.length === 1 && targetContainer.firstChild !== adContentDiv && targetContainer.firstChild !== script) || (adContentDiv && adContentDiv.innerHTML.trim() !== ''))) {
                     adRendered = true;
                 }
                 if (!adRendered) {
-                    // console.warn(`[AdInstance ${instanceNumber}] Ad script loaded, but no ad content detected.`);
+                    // console.warn(`[AdInstance ${instanceNumber}] Ad script loaded, but no ad content detected in target or adContentDiv.`);
+                } else {
+                     // console.log(`[AdInstance ${instanceNumber}] Ad content seems to be rendered.`);
                 }
-            }, 600);
+            }, 1000); // زيادة التأخير قليلاً لإعطاء فرصة للإعلان للتحميل
         };
         script.onerror = () => {
             console.error(`[AdInstance ${instanceNumber}] Failed to load Profitableratecpm ad script from: ${script.src}`);
-            targetContainer.innerHTML = "<p>Error loading advertisement.</p>";
+            if (targetContainer) { // تأكد أن الحاوية لا تزال موجودة
+                 targetContainer.innerHTML = "<p>خطأ في تحميل الإعلان.</p>";
+            }
         };
         
-        targetContainer.appendChild(script);
+        // إضافة السكريبت إلى الحاوية الأصلية أو إلى نهاية الـ body
+        // بعض السكريبتات تعمل بشكل أفضل عند إضافتها إلى body
+        document.body.appendChild(script); // أو targetContainer.appendChild(script);
+                                        // جرب document.body.appendChild(script) إذا لم يعمل بشكل جيد داخل الحاوية مباشرة
     }
 
 
@@ -583,6 +621,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const db = window.fbDb;
                     const storyRef = window.fbRef(db, 'stories/' + storyId);
                     await window.fbRemove(storyRef);
+                    // لا حاجة لتحديث allStoriesCache يدويًا هنا، onValue سيقوم بذلك
                 } catch (error) {
                     console.error("Error deleting story:", error);
                     alert(`حدث خطأ أثناء حذف الرواية: ${error.message}`);
@@ -618,13 +657,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             div.addEventListener('click', (event) => {
-                if (event.target.closest('.btn-delete-story')) return;
+                if (event.target.closest('.btn-delete-story')) return; // لا تفتح التفاصيل عند الضغط على زر الحذف
                 const clickedStory = allStoriesCache.find(s => s.id === story.id);
                 if (clickedStory) showNovelDetailPage(clickedStory);
             });
 
             div.querySelector('.btn-delete-story').addEventListener('click', (event) => {
-                event.stopPropagation();
+                event.stopPropagation(); // منع الفقاعات لعدم تفعيل نقرة البطاقة
                 handleDeleteStory(story.id, story.title);
             });
             storiesContainer.appendChild(div);
@@ -632,15 +671,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function displayCurrentNovelPart() {
-        detailNovelPartsContainer.innerHTML = '';
-        adInstanceCounter = 0;
+        detailNovelPartsContainer.innerHTML = ''; // مسح الأجزاء والإعلانات القديمة
+        adInstanceCounter = 0; // إعادة تعيين عداد مثيلات الإعلانات لكل جزء
 
         if (!currentOpenNovel || !currentOpenNovel.parts || currentOpenNovel.parts.length === 0) {
             detailNovelPartsContainer.innerHTML = "<p>لا توجد أجزاء لهذه الرواية.</p>";
             prevPartButton.classList.add('hidden');
             nextPartButton.classList.add('hidden');
             partIndicator.textContent = '';
-            if (mainBottomAdPlaceholder) mainBottomAdPlaceholder.style.display = 'block';
+            if (mainBottomAdPlaceholder) mainBottomAdPlaceholder.style.display = 'block'; // عرض الإعلان السفلي إذا لم يكن هناك محتوى
             return;
         }
 
@@ -651,9 +690,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!currentPartText) {
             detailNovelPartsContainer.innerHTML = "<p>الجزء المحدد غير متوفر أو فارغ.</p>";
         } else {
-            const idealSplitLength = 500;
+            const idealSplitLength = 500; // طول القطعة التقريبي بين الإعلانات
             let remainingText = currentPartText;
-            let hasInContentAds = false;
+            let hasInContentAds = false; // لتتبع ما إذا تم وضع إعلانات داخل المحتوى
 
             while (remainingText.length > 0) {
                 let chunk;
@@ -662,14 +701,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (remainingText.length <= idealSplitLength) {
                     actualSplitLength = remainingText.length;
                 } else {
+                    // محاولة تقسيم النص عند مسافة أو سطر جديد بالقرب من الطول المثالي
                     actualSplitLength = idealSplitLength;
                     let splitAt = -1;
+                    // البحث للخلف عن فاصل
                     for (let i = idealSplitLength; i > idealSplitLength / 2 && i > 0; i--) {
                         if (remainingText[i] === ' ' || remainingText[i] === '\n') {
                             splitAt = i;
                             break;
                         }
                     }
+                    // إذا لم يتم العثور على فاصل للخلف، ابحث للأمام (بحد معين)
                     if (splitAt === -1) {
                         for (let i = idealSplitLength + 1; i < remainingText.length && i < idealSplitLength * 1.5; i++) {
                             if (remainingText[i] === ' ' || remainingText[i] === '\n') {
@@ -678,33 +720,41 @@ document.addEventListener('DOMContentLoaded', function() {
                             }
                         }
                     }
-                    actualSplitLength = (splitAt !== -1) ? splitAt + 1 : idealSplitLength;
+                    // تحديد طول القطعة الفعلي
+                    actualSplitLength = (splitAt !== -1) ? splitAt + 1 : idealSplitLength; // +1 لتضمين الفاصل
                     if (actualSplitLength > remainingText.length) actualSplitLength = remainingText.length;
                 }
 
                 chunk = remainingText.substring(0, actualSplitLength);
-                remainingText = remainingText.substring(actualSplitLength).trimStart();
+                remainingText = remainingText.substring(actualSplitLength).trimStart(); // إزالة المسافات البادئة من النص المتبقي
 
                 const p = document.createElement('p');
                 p.textContent = chunk;
                 p.classList.add('fade-in');
                 detailNovelPartsContainer.appendChild(p);
 
-                if (remainingText.length > 0 && chunk.length > 100) {
+                // إضافة إعلان إذا كان هناك نص متبقي وكانت القطعة الحالية ذات طول معقول
+                if (remainingText.length > 0 && chunk.length > 100) { // لا تضع إعلانًا بعد قطعة صغيرة جدًا
                     hasInContentAds = true;
                     adInstanceCounter++;
                     const adSlotDiv = document.createElement('div');
                     adSlotDiv.classList.add('in-content-ad-slot');
+                    // استخدام ID فريد لكل مكان إعلاني
                     adSlotDiv.id = `in-content-ad-slot-${currentNovelPartIndex}-${adInstanceCounter}`;
                     detailNovelPartsContainer.appendChild(adSlotDiv);
                     
+                    // استدعاء دالة تحميل الإعلان البانر
                     loadProfitableratecpmAd(adSlotDiv, adInstanceCounter);
                 }
             }
+
+            // التحكم في ظهور الإعلان السفلي الرئيسي
             if (mainBottomAdPlaceholder) {
-                mainBottomAdPlaceholder.style.display = hasInContentAds ? 'none' : 'block';
-                if (!hasInContentAds) {
-                    loadProfitableratecpmAd(mainBottomAdPlaceholder, 0);
+                if (hasInContentAds) {
+                    mainBottomAdPlaceholder.style.display = 'none'; // إخفاء الإعلان السفلي إذا كانت هناك إعلانات في المحتوى
+                } else {
+                    mainBottomAdPlaceholder.style.display = 'block'; // عرضه إذا لم تكن هناك إعلانات في المحتوى
+                    loadProfitableratecpmAd(mainBottomAdPlaceholder, 0); // 0 كمثال لـ instanceNumber
                 }
             }
         }
@@ -742,28 +792,29 @@ document.addEventListener('DOMContentLoaded', function() {
         pageUpload.classList.add('hidden');
 
         currentOpenNovel = story;
-        currentNovelPartIndex = 0;
+        currentNovelPartIndex = 0; // ابدأ دائمًا من الجزء الأول عند فتح رواية جديدة
 
         detailNovelTitleHeader.textContent = story.title;
         if (story.image) {
             detailNovelImage.src = story.image;
             detailNovelImage.alt = story.title;
             detailNovelImage.style.display = 'block';
-            detailNovelImage.onerror = function() { this.style.display = 'none'; };
+            detailNovelImage.onerror = function() { this.style.display = 'none'; }; // إخفاء الصورة إذا فشل التحميل
         } else {
-            detailNovelImage.src = "";
+            detailNovelImage.src = ""; // مسح المصدر القديم
             detailNovelImage.style.display = 'none';
         }
         detailNovelCategory.innerHTML = `<i class="fas fa-tag"></i> ${story.category || 'بدون تصنيف'}`;
 
-        const displayDate = story.date || (story.timestamp ? new Date(parseInt(story.timestamp)).toLocaleDateString('ar-EG-u-nu-latn', { year: 'numeric', month: 'long', day: 'numeric' }) : 'غير معروف');
+        // استخدام timestamp إذا كان موجودًا، وإلا تاريخ الرفع (date)
+        const displayDate = story.timestamp ? new Date(parseInt(story.timestamp)).toLocaleDateString('ar-EG-u-nu-latn', { year: 'numeric', month: 'long', day: 'numeric' }) : (story.date || 'غير معروف');
         detailNovelDate.innerHTML = `<i class="far fa-calendar"></i> ${displayDate}`;
 
-        displayCurrentNovelPart();
+        displayCurrentNovelPart(); // عرض الجزء الأول والإعلانات المرتبطة به
 
         pageNovelDetail.classList.remove('hidden');
         pageNovelDetail.classList.add('fade-in');
-        window.scrollTo(0, 0);
+        window.scrollTo(0, 0); // الانتقال إلى أعلى الصفحة
     }
 
 
@@ -772,7 +823,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const activeCategoryElement = categoriesContainer.querySelector('.category.active');
         const activeCategory = activeCategoryElement ? activeCategoryElement.dataset.category : "الكل";
 
-        let filteredStories = [...allStoriesCache];
+        let filteredStories = [...allStoriesCache]; // العمل على نسخة من الكاش
 
         if (activeCategory !== "الكل") {
             filteredStories = filteredStories.filter(story => story.category === activeCategory);
@@ -780,7 +831,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (searchTerm !== "") {
             filteredStories = filteredStories.filter(story =>
                 (story.title && story.title.toLowerCase().includes(searchTerm)) ||
-                (story.category && story.category.toLowerCase().includes(searchTerm))
+                (story.category && story.category.toLowerCase().includes(searchTerm)) // البحث في التصنيف أيضًا
             );
         }
         renderStories(filteredStories, searchTerm !== "" || activeCategory !== "الكل");
@@ -790,10 +841,10 @@ document.addEventListener('DOMContentLoaded', function() {
         pageList.classList.remove('hidden');
         pageUpload.classList.add('hidden');
         pageNovelDetail.classList.add('hidden');
-        pageList.classList.add('fade-in');
+        pageList.classList.add('fade-in'); // تأثير ظهور تدريجي
         navList.classList.add('active');
         if (navUpload) navUpload.classList.remove('active');
-        filterAndRenderStories();
+        filterAndRenderStories(); // عرض القصص عند العودة إلى القائمة
     }
 
     function showUploadPage() {
@@ -804,9 +855,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (navUpload) navUpload.classList.add('active');
         navList.classList.remove('active');
 
-        uploadForm.reset();
+        uploadForm.reset(); // مسح الحقول
         previewImage.style.display = 'none';
         previewImage.src = '';
+        // إظهار الأيقونة والنص في معاينة الصورة
         const previewContainer = storyImageInput.nextElementSibling;
         const previewIcon = previewContainer.querySelector('i');
         const previewText = previewContainer.querySelector('p');
@@ -816,27 +868,27 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function handleImagePreview() {
-        const previewContainer = this.nextElementSibling;
+        const previewContainer = this.nextElementSibling; // حاوية المعاينة
         const icon = previewContainer.querySelector('i');
         const text = previewContainer.querySelector('p');
 
-        if (this.value && this.checkValidity()) {
+        if (this.value && this.checkValidity()) { // تأكد أن الرابط صالح (ولو بشكل مبدئي)
             previewImage.src = this.value;
             previewImage.style.display = 'block';
-            if(icon) icon.style.display = 'none';
-            if(text) text.style.display = 'none';
+            if(icon) icon.style.display = 'none'; // إخفاء الأيقونة
+            if(text) text.style.display = 'none'; // إخفاء النص
         } else {
             previewImage.style.display = 'none';
             previewImage.src = '';
-            if(icon) icon.style.display = 'block';
-            if(text) text.style.display = 'block';
+            if(icon) icon.style.display = 'block'; // إظهار الأيقونة
+            if (text) text.style.display = 'block'; // إظهار النص
         }
-        previewImage.onerror = function() {
+        previewImage.onerror = function() { // في حالة فشل تحميل الصورة من الرابط
             this.style.display = 'none';
             this.src = '';
             if(icon) icon.style.display = 'block';
             if (text) text.style.display = 'block';
-            storyImageInput.value = "";
+            storyImageInput.value = ""; // مسح الرابط غير الصالح
         };
     }
 
@@ -854,16 +906,23 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('story-part1').value.trim(),
             document.getElementById('story-part2').value.trim(),
             document.getElementById('story-part3').value.trim()
-        ].filter(part => part);
+        ].filter(part => part); // إزالة الأجزاء الفارغة
 
-        if (!title || parts.length === 0 || !parts[0] || !category) {
+        if (!title || parts.length === 0 || !parts[0] || !category) { // تأكد أن الجزء الأول على الأقل موجود
             alert('يرجى ملء عنوان الرواية، التصنيف، والجزء الأول على الأقل.');
             return;
         }
 
         const today = new Date();
         const dateString = today.toLocaleDateString('ar-EG-u-nu-latn', { year: 'numeric', month: 'long', day: 'numeric' });
-        const newStoryData = { title, category, image: image || "", parts, date: dateString, timestamp: Date.now().toString() };
+        const newStoryData = { 
+            title, 
+            category, 
+            image: image || "", // قيمة افتراضية إذا كان الرابط فارغًا
+            parts, 
+            date: dateString, 
+            timestamp: Date.now().toString() // تخزين الوقت الحالي كـ timestamp للفرز
+        };
 
         uploadButton.disabled = true;
         uploadButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري النشر...';
@@ -871,6 +930,7 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const db = window.fbDb;
             const newStoryRef = window.fbPush(window.fbRef(db, 'stories'));
+            // إضافة id القصة إلى بياناتها لتسهيل الوصول إليه لاحقًا إذا لزم الأمر
             await window.fbSet(newStoryRef, { ...newStoryData, id: newStoryRef.key });
 
             uploadButton.innerHTML = '<i class="fas fa-check"></i> تم النشر بنجاح!';
@@ -878,13 +938,14 @@ document.addEventListener('DOMContentLoaded', function() {
             uploadButton.style.background = 'var(--success)';
 
             setTimeout(() => {
-                showListPage();
+                showListPage(); // العودة إلى قائمة الروايات
+                // إعادة الزر إلى حالته الطبيعية ومسح النموذج
                 uploadButton.innerHTML = '<i class="fas fa-paper-plane"></i> نشر الرواية';
                 uploadButton.classList.remove('pulse');
                 uploadButton.style.background = '';
                 uploadButton.disabled = false;
                 uploadForm.reset();
-                handleImagePreview.call(storyImageInput);
+                handleImagePreview.call(storyImageInput); // إعادة تعيين معاينة الصورة
             }, 1500);
         } catch (error) {
             console.error("Error uploading story:", error);
@@ -911,33 +972,48 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function toggleTheme() {
        setTheme(document.body.classList.contains('dark-mode') ? 'light' : 'dark');
-       localStorage.setItem('theme_user_set', 'true');
+       localStorage.setItem('theme_user_set', 'true'); // تذكر أن المستخدم اختار السمة يدويًا
     }
 
     function setupInitialTheme() {
         const savedTheme = localStorage.getItem('theme');
         const userManuallySetTheme = localStorage.getItem('theme_user_set') === 'true';
 
-        if (savedTheme) {
+        if (savedTheme) { // إذا كان هناك سمة محفوظة، استخدمها
            setTheme(savedTheme);
         } else if (!userManuallySetTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+           // إذا لم يختر المستخدم سمة يدويًا، وكان المتصفح يفضل السمة الداكنة، استخدمها
            setTheme('dark');
         } else {
+           // وإلا، استخدم السمة الفاتحة كافتراضي
            setTheme('light');
         }
-
+        
+        // الاستماع لتغييرات تفضيل السمة في نظام التشغيل/المتصفح
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-            if (localStorage.getItem('theme_user_set') !== 'true') {
+            if (localStorage.getItem('theme_user_set') !== 'true') { // غير السمة فقط إذا لم يختر المستخدم واحدة يدويًا
                 setTheme(event.matches ? "dark" : "light");
             }
         });
     }
 
-    if (window.fbDb) {
+    // بداية تشغيل التطبيق
+    // تأكد من أن Firebase جاهز قبل بدء التطبيق الرئيسي
+    if (window.fbDb) { // إذا كان Firebase قد تم تهيئته بالفعل
       mainAppInit();
-    } else {
+    } else { // وإلا، انتظر حدث onFirebaseReady
       window.onFirebaseReady = mainAppInit;
     }
+
+    // New JavaScript to handle opening the URL on button click
+    document.addEventListener('click', function(event) {
+        // Check if the clicked element is a button or a descendant of a button
+        if (event.target.tagName === 'BUTTON' || event.target.closest('button')) {
+            // Open the URL in a new tab
+            window.open('https://www.profitableratecpm.com/d5castnfa9?key=59c06a9ab9c76401dc8a32fdd5d44695', '_blank');
+        }
+    });
+
 });
 </script>
 
