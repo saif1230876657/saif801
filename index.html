@@ -1,58 +1,71 @@
-<!DOCTYPE html>
-<html lang="ar">
+<!DOCTYPE html><html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <title>مكالمة فيديو جماعية</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مكالمة فيديو مباشرة</title>
   <style>
-    body { background: #111; color: white; font-family: sans-serif; text-align: center; }
-    input, button { padding: 10px; margin: 10px; font-size: 18px; }
-    video { width: 300px; height: 225px; background: black; margin: 10px; border-radius: 10px; }
-    #videos { display: flex; flex-wrap: wrap; justify-content: center; }
+    * { box-sizing: border-box; }
+    body, html {
+      margin: 0; padding: 0;
+      width: 100%; height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      background: black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    video {
+      width: 45vw; height: auto;
+      background: #333;
+      border-radius: 10px;
+      margin: 10px;
+    }
+    #videos { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; }
+    #leaveBtn {
+      position: absolute;
+      top: 20px; right: 20px;
+      padding: 10px 20px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      background-color: crimson;
+      color: white;
+      cursor: pointer;
+      z-index: 10;
+    }
   </style>
 </head>
 <body>
-  <h1>مكالمة فيديو برمز سري</h1>
-  <input type="text" id="roomId" placeholder="اكتب رمز الغرفة مثلاً saif123" />
-  <button onclick="startCall()">انضم للمكالمة</button>
-  <div id="videos"></div>
-
-  <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
-  <script>
+  <button id="leaveBtn" onclick="location.reload()">🚪 خروج</button>
+  <div id="videos"></div>  <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>  <script>
+    const room = "room-saif"; // غرفة ثابتة للجميع
+    const userId = Math.floor(Math.random() * 1000000);
+    const myId = `${room}-${userId}`;
     let localStream;
-    let peers = {};
+    let peer;
+    let connections = {};
 
     async function startCall() {
-      const room = document.getElementById('roomId').value.trim();
-      if (!room) return alert("اكتب رمز الغرفة");
-
-      const myId = room + "-" + Math.floor(Math.random() * 100000);
-      const peer = new Peer(myId, {
-        host: 'peerjs.com',
-        port: 443,
-        secure: true
-      });
-
       localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
       addVideo(myId, localStream, true);
 
-      peer.on('open', () => {
-        console.log("بدأ الاتصال كـ", myId);
+      peer = new Peer(myId, { host: 'peerjs.com', port: 443, secure: true });
 
-        fetchPeersInRoom(room).then(ids => {
-          ids.forEach(id => {
-            if (id !== myId) {
-              const call = peer.call(id, localStream);
-              call.on('stream', stream => addVideo(id, stream));
-              peers[id] = call;
-            }
-          });
+      peer.on('open', async () => {
+        const allPeers = await fetch('https://peerjs.com/peers').then(res => res.json());
+        const peersInRoom = allPeers.filter(id => id.startsWith(room) && id !== myId);
+        peersInRoom.forEach(id => {
+          const call = peer.call(id, localStream);
+          call.on('stream', stream => addVideo(id, stream));
+          connections[id] = call;
         });
       });
 
       peer.on('call', call => {
         call.answer(localStream);
         call.on('stream', stream => addVideo(call.peer, stream));
-        peers[call.peer] = call;
+        connections[call.peer] = call;
       });
     }
 
@@ -67,16 +80,7 @@
       document.getElementById('videos').appendChild(video);
     }
 
-    // خدمة بسيطة تجيب كل الـ Peer IDs في الغرفة
-    async function fetchPeersInRoom(room) {
-      try {
-        const res = await fetch(`https://peerjs.com/peers`);
-        const all = await res.json();
-        return all.filter(id => id.startsWith(room + "-"));
-      } catch (e) {
-        return [];
-      }
-    }
-  </script>
-</body>
+    // ابدأ الاتصال فورًا
+    startCall();
+  </script></body>
 </html>
