@@ -4,83 +4,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>مكالمة فيديو مباشرة</title>
   <style>
-    * { box-sizing: border-box; }
-    body, html {
-      margin: 0; padding: 0;
-      width: 100%; height: 100%;
-      font-family: 'Segoe UI', sans-serif;
-      background: black;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
-    video {
-      width: 45vw; height: auto;
-      background: #333;
-      border-radius: 10px;
-      margin: 10px;
-    }
-    #videos { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; }
-    #leaveBtn {
-      position: absolute;
-      top: 20px; right: 20px;
-      padding: 10px 20px;
-      font-size: 18px;
-      border: none;
-      border-radius: 8px;
-      background-color: crimson;
-      color: white;
-      cursor: pointer;
-      z-index: 10;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; overflow: hidden; font-family: 'Segoe UI', sans-serif; }
+    #jitsi-container { width: 100%; height: 100%; }
   </style>
 </head>
 <body>
-  <button id="leaveBtn" onclick="location.reload()">🚪 خروج</button>
-  <div id="videos"></div>  <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>  <script>
-    const room = "room-saif"; // غرفة ثابتة للجميع
-    const userId = Math.floor(Math.random() * 1000000);
-    const myId = `${room}-${userId}`;
-    let localStream;
-    let peer;
-    let connections = {};
-
-    async function startCall() {
-      localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-      addVideo(myId, localStream, true);
-
-      peer = new Peer(myId, { host: 'peerjs.com', port: 443, secure: true });
-
-      peer.on('open', async () => {
-        const allPeers = await fetch('https://peerjs.com/peers').then(res => res.json());
-        const peersInRoom = allPeers.filter(id => id.startsWith(room) && id !== myId);
-        peersInRoom.forEach(id => {
-          const call = peer.call(id, localStream);
-          call.on('stream', stream => addVideo(id, stream));
-          connections[id] = call;
-        });
-      });
-
-      peer.on('call', call => {
-        call.answer(localStream);
-        call.on('stream', stream => addVideo(call.peer, stream));
-        connections[call.peer] = call;
-      });
-    }
-
-    function addVideo(id, stream, muted = false) {
-      if (document.getElementById(id)) return;
-      const video = document.createElement('video');
-      video.id = id;
-      video.srcObject = stream;
-      video.autoplay = true;
-      video.playsInline = true;
-      video.muted = muted;
-      document.getElementById('videos').appendChild(video);
-    }
-
-    // ابدأ الاتصال فورًا
-    startCall();
-  </script></body>
+  <div id="jitsi-container"></div>
+  <script src="https://meet.jit.si/external_api.js"></script>
+  <script>
+    // دمج Jitsi Meet مباشرة في الصفحة بدون سيرفر
+    const domain = "meet.jit.si";
+    const roomName = "saif_public_room"; // غرفة ثابتة للجميع
+    const options = {
+      roomName: roomName,
+      parentNode: document.getElementById('jitsi-container'),
+      interfaceConfigOverwrite: {
+        // يمكن تعديل أزرار الواجهة حسب الحاجة
+        TOOLBAR_BUTTONS: [
+          'microphone', 'camera', 'hangup', 'tileview'
+        ]
+      }
+    };
+    const api = new JitsiMeetExternalAPI(domain, options);
+    // عند انتهاء المكالمة (ضغط hangup) يعيد تحميل الصفحة
+    api.addEventListener('readyToClose', () => {
+      location.reload();
+    });
+  </script>
+</body>
 </html>
